@@ -1,0 +1,79 @@
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "universal-price-tracker"
+version = "0.1.0"
+description = "Modułowa aplikacja desktopowo-serwerowa do monitorowania cen produktów."
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115.0,<1.0.0",
+    "uvicorn[standard]>=0.32.0,<1.0.0",
+    "sqlalchemy[asyncio]>=2.0.36,<3.0.0",
+    "aiosqlite>=0.20.0,<1.0.0",
+    "alembic>=1.14.0,<2.0.0",
+    "pydantic>=2.9.0,<3.0.0",
+    "pydantic-settings>=2.6.0,<3.0.0",
+    "structlog>=24.4.0,<26.0.0",
+    "platformdirs>=4.3.0,<5.0.0",
+    "keyring>=25.5.0,<26.0.0",
+    "httpx>=0.27.2,<1.0.0",
+]
+
+[project.optional-dependencies]
+postgres = [
+    "asyncpg>=0.30.0,<1.0.0",
+]
+desktop = [
+    "PySide6>=6.8.0,<7.0.0",
+    "pyqtgraph>=0.13.7,<1.0.0",
+]
+scraping = [
+    "selectolax>=0.3.26,<1.0.0",
+    "playwright>=1.49.0,<2.0.0",
+]
+dev = [
+  "pytest>=8.3.0,<9.0.0",
+  "pytest-asyncio>=1.0.0,<2.0.0",
+  "pytest-qt>=4.4.0,<5.0.0",
+  "ruff>=0.7.0,<1.0.0",
+  "mypy>=1.13.0,<2.0.0",
+]
+build = [
+  "pyinstaller>=6.10.0,<7.0.0",
+]
+
+[project.scripts]
+price-tracker-server = "price_tracker.server:main"
+price-tracker = "price_tracker.desktop.app:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/price_tracker"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+qt_api = "pyside6"
+markers = [
+  "e2e: testy end-to-end całej aplikacji (GUI + prawdziwy backend)",
+  "live: opcjonalne testy na prawdziwych sklepach w sieci",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "ASYNC"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+mypy_path = "src"
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = ["selectolax.*", "pyqtgraph.*"]
+ignore_missing_imports = true

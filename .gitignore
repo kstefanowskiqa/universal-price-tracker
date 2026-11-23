@@ -1,0 +1,40 @@
+# Środowisko wirtualne i Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+
+# Artefakty budowania PyInstaller i Inno Setup
+build/
+dist/
+dist_installer/
+
+# Cache narzędzi jakości i testów
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Sekrety i lokalne pliki środowiskowe (.env.example ZOSTAJĘ w repo)
+.env
+.env.local
+.env.*.local
+
+# Lokalne bazy danych i logi (gdyby powstały w folderze projektu)
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+*.log
+*.jsonl
+
+# Edytor i system
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
